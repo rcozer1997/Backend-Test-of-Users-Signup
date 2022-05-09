@@ -12,9 +12,20 @@ app.post('/user', async (req, res) => {
     })
     res.json(result)
   })
-
+/*
 app.get('/users', async (req, res) => {
     const users = await prisma.user.findMany()
+    res.json(users)
+  })
+*/
+  app.get('/users', async (req, res) => {
+    const users = await prisma.user.findMany({
+      where: {
+        email: {
+          endsWith: 'teste.com',
+        }
+      }
+    })
     res.json(users)
   })
 

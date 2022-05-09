@@ -19,13 +19,16 @@ app.get('/users', async (req, res) => {
   })
 */
   app.get('/users', async (req, res) => {
-    const users = await prisma.user.findMany({
-      where: {
-        email: {
-          endsWith: 'teste.com',
+    const users = await prisma.user.findMany(
+        {
+        where: {
+          email: {
+            contains: 'alice'
+          }
         }
       }
-    })
+    ) 
+    // console.log(users)
     res.json(users)
   })
 

@@ -3,6 +3,9 @@ import express from 'express'
 import {Request, Response, NextFunction} from "express"
 import { validateId } from '../../middlewares/validate'
 import { createUserService } from '../../services/user'
+import { findUsersService } from '../../services/user'
+import { deleteUserService } from '../../services/user'
+import { string } from 'joi'
 
 const app = express()
 app.use(express.json())
@@ -13,29 +16,23 @@ const createUserController = async (req:Request, res:Response) => {
   res.status(201).json(result)
 }
 
+const findUsersController = async (req:Request, res: Response) => {
+  const email = req.query.email as string
+  const users = await findUsersService({email})
+  res.status(200).json(users)
+}
 
-app.get('/users', async (req, res) => {
-  
-  const { email, name } = req.query
-  const users = await prisma.user.findMany(
-    {
-      where: {
-        email: {
-          contains: email as string
-        },
-        name: {
-          contains: name as string,
-          mode: 'insensitive'
-        }
-      },
-      orderBy: {
-        id: 'desc'
-      }
-    }
-  )
-  res.json(users)
-})
-
+const deleteUsersController = async (req:Request, res: Response) => {
+  const id = parseInt(req.params.id)
+  let post
+  try {
+    post = await deleteUserService({id})
+  } catch (error) {
+      console.log(error)
+  }
+  res.status(204).send()
+}
+/*
 app.delete('/users/:id', validateId ,async (req, res) => {
   const { id } = req.params
   let post
@@ -48,7 +45,7 @@ app.delete('/users/:id', validateId ,async (req, res) => {
   }
   res.status(204).send()
 })
-
+*/
 app.patch('/users/:id', validateId, async (req, res) => {
   console.log('request done') 
   const { id } = req.params
@@ -78,3 +75,4 @@ app.listen(3000, () =>
 )
 
 export {createUserController}
+export {findUsersController}

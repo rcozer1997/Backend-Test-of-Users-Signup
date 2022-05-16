@@ -3,8 +3,9 @@ const router = express.Router();
 const usersController = require('../controllers/users.controller');
 import {validateId} from "../middlewares/validate"
 import {createUserController} from "../controllers/users/users.controller"
+import {findUsersController} from "../controllers/users/users.controller"
 
-router.get('/', usersController.get);
+router.get('/', findUsersController);
 
 router.post('/user', createUserController);
 

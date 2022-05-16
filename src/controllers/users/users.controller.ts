@@ -5,6 +5,7 @@ import { validateId } from '../../middlewares/validate'
 import { createUserService } from '../../services/user'
 import { findUsersService } from '../../services/user'
 import { deleteUserService } from '../../services/user'
+import { updateUserService } from '../../services/user'
 import { string } from 'joi'
 
 const app = express()
@@ -32,6 +33,19 @@ const deleteUsersController = async (req:Request, res: Response) => {
   }
   res.status(204).send()
 }
+
+const updateUserController = async (req:Request, res: Response) => {
+  const id = parseInt(req.params.id)
+  let updateUser 
+  try {
+    updateUser = await updateUserService({id})
+  } catch(error){
+    console.log(error)
+  }
+  res.json(updateUser)
+}
+
+
 /*
 app.delete('/users/:id', validateId ,async (req, res) => {
   const { id } = req.params
@@ -46,6 +60,8 @@ app.delete('/users/:id', validateId ,async (req, res) => {
   res.status(204).send()
 })
 */
+
+/*
 app.patch('/users/:id', validateId, async (req, res) => {
   console.log('request done') 
   const { id } = req.params
@@ -69,10 +85,12 @@ app.patch('/users/:id', validateId, async (req, res) => {
   }
   res.json(updateUser)
 })
-
+*/
 app.listen(3000, () =>
   console.log('REST API server ready at: http://localhost:3000'),
 )
 
 export {createUserController}
 export {findUsersController}
+export {updateUserController}
+export {deleteUsersController}

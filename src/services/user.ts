@@ -42,8 +42,23 @@ const deleteUserService = async ({id}:idArg) => {
 })
 }
 
+const updateUserService = async ({id}:idArg) =>{
+    return prisma.user.update({
+        select: {
+            id: true,
+        },
+        where: {
+            id: Number(id)
+        },
+        data: {
+            name: 'Uiso'
+        }
+
+    })
+}
 
 
 export {createUserService}
 export {findUsersService}
 export {deleteUserService}
+export {updateUserService}

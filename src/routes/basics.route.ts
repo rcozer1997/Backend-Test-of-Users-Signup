@@ -4,14 +4,16 @@ const usersController = require('../controllers/users.controller');
 import {validateId} from "../middlewares/validate"
 import {createUserController} from "../controllers/users/users.controller"
 import {findUsersController} from "../controllers/users/users.controller"
+import {deleteUsersController} from "../controllers/users/users.controller"
+import {updateUserController} from "../controllers/users/users.controller"
 
 router.get('/', findUsersController);
 
 router.post('/user', createUserController);
 
-router.put('/:id', validateId,usersController.update);
+//router.put('/:id', validateId,usersController.update);
 
-router.delete('/:id', usersController.remove);
+router.delete('/:id', deleteUsersController);
 
-router.patch('/:id', )
+router.patch('/:id', updateUserController)
 module.exports = router;

@@ -1,6 +1,7 @@
 import { prisma } from '../configs/db'
 import express from 'express'
 import internal from 'stream';
+import * as Utils from "../utils/utils"
 
 interface CreateUserArgs{
     name: string;
@@ -15,11 +16,12 @@ interface idArg {
     id: number;
 }
 const createUserService = async ({name, email, password}:CreateUserArgs) => {
+    const hashedPsw = await Utils.hashPassword(password)
     return prisma.user.create({
       data: {
         email, 
         name, 
-        password
+        password: hashedPsw
        },
     })
   }
@@ -57,8 +59,4 @@ const updateUserService = async ({id}:idArg) =>{
     })
 }
 
-
-export {createUserService}
-export {findUsersService}
-export {deleteUserService}
-export {updateUserService}
+export {createUserService, findUsersService, deleteUserService, updateUserService}

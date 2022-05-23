@@ -1,15 +1,17 @@
-import { PrismaClient } from '@prisma/client'
-import express from 'express'
 import {Request, Response, NextFunction} from 'express'
+import Joi from 'joi'
 
-const validateId = (req: Request, res: Response, next: NextFunction) => {
-    const {id} = req.params
-    if(typeof Number(id) === 'number'){
-      next() 
-    }
-    else{
+const validateSchema = (schema:Joi.ObjectSchema<any>) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const {error} = schema.validate(req, {abortEarly:true})
+      if(!error){
+        next()
+        return
+      }
       res.status(422).send()
-    }
-  } 
+  }
+}
 
-export {validateId}
+  //const result = signupSchema.validate(req)
+
+export {validateSchema}
